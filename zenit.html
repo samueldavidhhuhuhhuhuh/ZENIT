@@ -3,738 +3,722 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNIQ BEAUTY — La belleza no tiene reglas</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>ZENIT — Conectando a todos con la tecnología</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold:   #C9A84C;
-    --lila:   #B57BEE;
-    --beige:  #F5EFE6;
-    --beige2: #EDE4D6;
-    --white:  #FFFFFF;
-    --dark:   #1C1510;
-    --dark2:  #251C13;
-    --mid:    #302417;
-    --text:   #3A2F1F;
-    --muted:  #8C7860;
-    --muted2: #BCA98C;
-    --border-light: rgba(201,168,76,.18);
-    --border-lila: rgba(181,123,238,.15);
+    --blue:    #1A6BFF;
+    --cyan:    #00E5FF;
+    --dark:    #080C18;
+    --dark2:   #0D1220;
+    --mid:     #111827;
+    --surface: #161E30;
+    --border:  rgba(0,229,255,0.1);
+    --text:    #E2E8F5;
+    --muted:   #5A6A8A;
+    --faint:   rgba(0,229,255,0.04);
   }
 
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--beige);
-    color:var(--text);
-    font-family:'Outfit',sans-serif;
-    overflow-x:hidden;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
   }
 
-  /* ── NOISE TEXTURE OVERLAY ── */
-  body::before{
-    content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
-    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-    background-repeat:repeat;background-size:200px 200px;
-    opacity:.5;
+  /* ── CURSOR ── */
+  .cur-dot {
+    width: 8px; height: 8px;
+    background: var(--cyan);
+    border-radius: 50%;
+    position: fixed; z-index: 9999;
+    pointer-events: none;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0 10px var(--cyan);
+    transition: transform .1s;
+  }
+  .cur-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(0,229,255,.4);
+    border-radius: 50%;
+    position: fixed; z-index: 9998;
+    pointer-events: none;
+    transform: translate(-50%,-50%);
+    transition: width .25s, height .25s, opacity .25s;
   }
 
   /* ── NAV ── */
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:200;
-    padding:24px 60px;
-    display:flex;align-items:center;justify-content:space-between;
-    background:rgba(245,239,230,.92);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border-light);
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 22px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, rgba(8,12,24,.95) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
   }
-  .logo-mark{
-    font-family:'Cormorant Garamond',serif;font-style:italic;
-    font-weight:300;font-size:28px;letter-spacing:3px;
-    color:var(--dark);text-decoration:none;
-    display:flex;align-items:baseline;gap:6px;
+  .logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700; font-size: 26px; letter-spacing: 5px;
+    display: flex; align-items: center; gap: 2px;
+    text-decoration: none; color: var(--text);
   }
-  .logo-mark strong{
-    font-style:normal;font-weight:600;letter-spacing:4px;font-size:22px;
-    color:var(--gold);
+  .logo-apex {
+    display: inline-block;
+    width: 9px; height: 9px;
+    background: var(--cyan);
+    border-radius: 50%;
+    margin: 0 2px 10px;
+    box-shadow: 0 0 10px var(--cyan), 0 0 24px var(--cyan);
+    animation: apex-pulse 2.4s ease-in-out infinite;
   }
-  nav ul{list-style:none;display:flex;gap:40px;}
-  nav ul a{
-    color:var(--muted);text-decoration:none;font-size:13px;
-    letter-spacing:2px;text-transform:uppercase;font-weight:400;
-    transition:color .25s;
+  @keyframes apex-pulse {
+    0%,100% { box-shadow: 0 0 8px var(--cyan), 0 0 18px var(--cyan); }
+    50%      { box-shadow: 0 0 18px var(--cyan), 0 0 40px var(--cyan), 0 0 60px rgba(0,229,255,.25); }
   }
-  nav ul a:hover{color:var(--gold);}
-  .nav-pill{
-    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
-    color:var(--white);background:var(--dark);
-    padding:10px 28px;border-radius:30px;
-    border:none;cursor:pointer;transition:background .25s;
-    text-decoration:none;
+  nav ul { list-style: none; display: flex; gap: 36px; }
+  nav ul a {
+    color: var(--muted); text-decoration: none;
+    font-family: 'Rajdhani', sans-serif; font-weight: 500;
+    font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase;
+    transition: color .25s;
   }
-  .nav-pill:hover{background:var(--gold);}
+  nav ul a:hover { color: var(--cyan); }
+  .nav-btn {
+    font-family: 'Rajdhani', sans-serif; font-weight: 600;
+    font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--cyan); border: 1px solid var(--cyan);
+    background: transparent; padding: 9px 22px; cursor: pointer;
+    clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+    transition: background .25s, color .25s;
+    text-decoration: none;
+  }
+  .nav-btn:hover { background: var(--cyan); color: var(--dark); }
+
+  /* ── GRID BG UTIL ── */
+  .grid-overlay {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,229,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
 
   /* ── HERO ── */
-  .hero{
-    min-height:100vh;display:grid;
-    grid-template-columns:1fr 1fr;
-    align-items:center;
-    padding:120px 60px 80px;
-    position:relative;overflow:hidden;
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 56px 80px;
+    position: relative; overflow: hidden;
   }
-  .hero-bg-blob{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(80px);
-    pointer-events:none;
+  .hero-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 75% 55%, rgba(26,107,255,.15) 0%, transparent 65%),
+      radial-gradient(ellipse 35% 35% at 85% 15%, rgba(0,229,255,.08) 0%, transparent 60%);
   }
-  .blob-1{
-    width:500px;height:500px;
-    background:radial-gradient(circle,rgba(201,168,76,.18) 0%,transparent 70%);
-    top:-100px;right:0;
-  }
-  .blob-2{
-    width:350px;height:350px;
-    background:radial-gradient(circle,rgba(181,123,238,.12) 0%,transparent 70%);
-    bottom:-50px;left:20%;
-  }
+  .grid-overlay { mask-image: radial-gradient(ellipse 80% 80% at 70% 50%, black 20%, transparent 75%); }
 
-  .hero-text{position:relative;z-index:2;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:10px;
-    font-size:11px;letter-spacing:3px;text-transform:uppercase;
-    color:var(--muted);margin-bottom:28px;font-weight:500;
+  .hero-text { position: relative; z-index: 2; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border);
+    background: var(--faint);
+    padding: 6px 16px;
+    font-family: 'Rajdhani', sans-serif; font-size: 11px;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--cyan);
+    clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+    margin-bottom: 36px;
   }
-  .eyebrow::before{
-    content:'';display:block;width:32px;height:1px;
-    background:var(--gold);
+  .tag-dot {
+    width: 6px; height: 6px; background: var(--cyan);
+    border-radius: 50%; box-shadow: 0 0 8px var(--cyan);
+    animation: apex-pulse 2.4s infinite;
   }
-  h1{
-    font-family:'Cormorant Garamond',serif;font-weight:300;
-    font-size:clamp(58px,5.5vw,92px);line-height:.95;
-    letter-spacing:-1px;margin-bottom:32px;color:var(--dark);
+  h1 {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: clamp(58px,6.5vw,100px); line-height: .92; letter-spacing: -1px;
+    margin-bottom: 28px;
   }
-  h1 em{font-style:italic;color:var(--gold);}
-  h1 .h1-lila{color:var(--lila);font-style:italic;}
-  .hero-quote{
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-    font-size:20px;color:var(--muted);line-height:1.65;
-    max-width:420px;margin-bottom:52px;
-    border-left:2px solid var(--gold);padding-left:20px;
+  .h1-outline { -webkit-text-stroke: 1px rgba(0,229,255,.4); color: transparent; }
+  .h1-accent  { color: var(--cyan); }
+  .hero-sub {
+    color: var(--muted); font-size: 17px; line-height: 1.75;
+    font-weight: 300; max-width: 460px; margin-bottom: 52px;
   }
-  .hero-btns{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
-  .btn-dark{
-    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
-    color:var(--white);background:var(--dark);
-    padding:14px 36px;border-radius:40px;border:none;
-    cursor:pointer;transition:background .3s,transform .3s;
-    text-decoration:none;display:inline-block;
+  .hero-btns { display: flex; gap: 20px; align-items: center; }
+  .btn-fill {
+    font-family: 'Rajdhani', sans-serif; font-weight: 600;
+    font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: #fff; background: var(--blue); border: none;
+    padding: 15px 36px; cursor: pointer;
+    clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+    transition: background .3s, box-shadow .3s; text-decoration: none;
+    display: inline-block;
   }
-  .btn-dark:hover{background:var(--gold);transform:translateY(-2px);}
-  .btn-outline{
-    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
-    color:var(--muted);background:transparent;
-    padding:14px 0;border:none;cursor:pointer;
-    display:inline-flex;align-items:center;gap:10px;
-    transition:color .3s;text-decoration:none;
+  .btn-fill:hover { background: var(--cyan); color: var(--dark); box-shadow: 0 0 32px rgba(0,229,255,.35); }
+  .btn-ghost {
+    font-family: 'Rajdhani', sans-serif; font-weight: 500;
+    font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--muted); background: none; border: none;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+    transition: color .3s; text-decoration: none;
   }
-  .btn-outline span{transition:transform .3s;}
-  .btn-outline:hover{color:var(--dark);}
-  .btn-outline:hover span{transform:translateX(5px);}
+  .btn-ghost span { transition: transform .3s; }
+  .btn-ghost:hover { color: var(--text); }
+  .btn-ghost:hover span { transform: translateX(5px); }
 
   /* ── HERO VISUAL ── */
-  .hero-vis{
-    position:relative;z-index:2;
-    display:flex;align-items:center;justify-content:center;
-    height:580px;
+  .hero-vis {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center; height: 520px;
   }
-  .product-jar{
-    width:260px;height:340px;
-    background:linear-gradient(145deg,#ede4d4 0%,#d4c4a0 60%,#c9a84c33 100%);
-    border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;
-    border:1px solid rgba(201,168,76,.3);
-    box-shadow:
-      inset 0 20px 40px rgba(255,255,255,.5),
-      0 30px 80px rgba(201,168,76,.15),
-      0 0 0 1px rgba(201,168,76,.1);
-    display:flex;align-items:center;justify-content:center;
-    position:relative;
-    animation:float-gentle 5s ease-in-out infinite;
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(0,229,255,.07); }
+  .ring-1 { width: 460px; height: 460px; animation: spin  28s linear infinite; }
+  .ring-2 { width: 340px; height: 340px; border-style: dashed; animation: spin 18s linear infinite reverse; }
+  .ring-3 { width: 230px; height: 230px; animation: spin  12s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .phone {
+    width: 230px; height: 470px;
+    border: 1px solid rgba(0,229,255,.22);
+    border-radius: 34px; background: var(--mid);
+    box-shadow: 0 0 60px rgba(26,107,255,.2), inset 0 0 30px rgba(0,229,255,.05);
+    animation: float 4.5s ease-in-out infinite;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center;
   }
-  @keyframes float-gentle{
-    0%,100%{transform:translateY(0) rotate(-3deg);}
-    50%{transform:translateY(-16px) rotate(-3deg);}
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(3deg)}50%{transform:translateY(-18px) rotate(3deg)} }
+  .phone-notch {
+    width: 72px; height: 5px; background: rgba(0,229,255,.3);
+    border-radius: 3px; margin-top: 14px;
   }
-  .jar-label{
-    font-family:'Cormorant Garamond',serif;font-style:italic;
-    font-size:18px;font-weight:300;color:var(--dark);
-    text-align:center;line-height:1.5;
+  .phone-screen {
+    flex: 1; width: calc(100% - 20px); margin: 10px;
+    background: linear-gradient(145deg,#0a0f20 0%,#142040 100%);
+    border-radius: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 52px; color: var(--cyan);
+    text-shadow: 0 0 28px var(--cyan);
+    letter-spacing: 2px;
   }
-  .jar-label strong{
-    display:block;font-style:normal;font-weight:600;
-    font-family:'Outfit',sans-serif;letter-spacing:3px;
-    font-size:12px;color:var(--gold);text-transform:uppercase;
-    margin-bottom:4px;
+  .corner-tag {
+    position: absolute; bottom: 20px; right: -1px;
+    background: var(--blue); color: #fff;
+    font-family: 'Rajdhani', sans-serif; font-size: 10px;
+    letter-spacing: 2px; padding: 5px 12px 5px 10px;
+    clip-path: polygon(6px 0%,100% 0%,100% 100%,0% 100%);
   }
-  .jar-badge{
-    position:absolute;bottom:-16px;right:-16px;
-    width:70px;height:70px;
-    background:var(--lila);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Cormorant Garamond',serif;font-style:italic;
-    font-size:13px;color:var(--white);text-align:center;line-height:1.3;
-    box-shadow:0 8px 24px rgba(181,123,238,.4);
-  }
-  .petal{
-    position:absolute;
-    width:140px;height:140px;
-    border-radius:50%;
-    border:1px solid var(--border-light);
-    animation:spin-slow linear infinite;
-  }
-  .petal:nth-child(1){width:500px;height:500px;animation-duration:35s;}
-  .petal:nth-child(2){width:370px;height:370px;border-color:var(--border-lila);animation-duration:22s;animation-direction:reverse;}
-  @keyframes spin-slow{to{transform:rotate(360deg);}}
 
-  /* ── MANIFIESTO ── */
-  .manifesto{
-    background:var(--dark);
-    padding:100px 60px;
-    position:relative;overflow:hidden;
-    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  /* ── STATS ── */
+  .stats {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: rgba(0,229,255,.018);
   }
-  .manifesto-quote{
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-    font-size:clamp(28px,3vw,44px);color:var(--beige);
-    line-height:1.35;
+  .stat {
+    padding: 36px 24px; text-align: center;
+    border-right: 1px solid var(--border);
   }
-  .manifesto-quote em{color:var(--gold);font-style:normal;}
-  .manifesto-text p{
-    color:var(--muted2);font-size:16px;line-height:1.8;font-weight:300;
-    margin-bottom:24px;
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    display: block; font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 52px; color: var(--cyan); line-height: 1;
+    text-shadow: 0 0 18px rgba(0,229,255,.35); margin-bottom: 4px;
   }
-  .manifesto-text p:last-child{margin-bottom:0;}
-  .manifesto-tag{
-    font-size:11px;letter-spacing:3px;text-transform:uppercase;
-    color:var(--gold);margin-bottom:20px;display:block;font-weight:500;
+  .stat-lbl {
+    font-family: 'Rajdhani', sans-serif; font-size: 11px;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted);
   }
-  .manifesto-bg-txt{
-    position:absolute;bottom:-40px;left:-20px;
-    font-family:'Cormorant Garamond',serif;font-weight:600;
-    font-size:180px;color:rgba(201,168,76,.04);line-height:1;
-    pointer-events:none;letter-spacing:-5px;
+
+  /* ── SECTION UTIL ── */
+  .section-tag {
+    display: block; font-family: 'Rajdhani', sans-serif; font-weight: 600;
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: clamp(36px,4vw,60px); line-height: .95; margin-bottom: 18px;
+  }
+  .section-sub {
+    color: var(--muted); font-size: 16px; line-height: 1.75;
+    font-weight: 300; max-width: 460px;
   }
 
   /* ── PILARES ── */
-  .pillars{
-    padding:100px 60px;background:var(--beige2);
-    position:relative;overflow:hidden;
+  .pillars {
+    padding: 100px 56px;
+    background: var(--dark2); position: relative; overflow: hidden;
   }
-  .pillars-header{
-    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;
-    margin-bottom:64px;
+  .pillars::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg,transparent,var(--cyan),transparent);
   }
-  .section-eyebrow{
-    display:block;font-size:11px;letter-spacing:3px;text-transform:uppercase;
-    color:var(--muted);margin-bottom:14px;font-weight:500;
+  .pillars-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; margin-top: 64px;
+    border: 1px solid var(--border); background: var(--border);
   }
-  .section-heading{
-    font-family:'Cormorant Garamond',serif;font-weight:300;
-    font-size:clamp(36px,3.5vw,58px);line-height:.95;color:var(--dark);
+  .pillar-card {
+    background: var(--dark2); padding: 52px;
+    position: relative; overflow: hidden;
+    transition: background .35s;
   }
-  .section-heading em{font-style:italic;color:var(--gold);}
-  .section-body{color:var(--muted);font-size:16px;line-height:1.75;font-weight:300;}
-  .pillars-grid{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  .pillar-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,transparent,var(--cyan),transparent);
+    transform: scaleX(0); transition: transform .4s;
+    transform-origin: left;
   }
-  .pillar-card{
-    background:var(--white);border:1px solid var(--border-light);
-    padding:40px 28px;border-radius:4px;
-    position:relative;overflow:hidden;cursor:default;
-    transition:transform .35s,box-shadow .35s,border-color .35s;
+  .pillar-card:hover { background: rgba(0,229,255,.025); }
+  .pillar-card:hover::after { transform: scaleX(1); }
+  .pillar-num {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 80px; color: rgba(0,229,255,.05); line-height: 1; margin-bottom: 18px;
   }
-  .pillar-card::after{
-    content:'';position:absolute;bottom:0;left:0;right:0;
-    height:3px;background:var(--gold);
-    transform:scaleX(0);transform-origin:left;transition:transform .4s;
+  .pillar-name {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 22px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 12px;
   }
-  .pillar-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(201,168,76,.12);border-color:var(--gold);}
-  .pillar-card:hover::after{transform:scaleX(1);}
-  .pillar-icon{
-    font-size:28px;margin-bottom:20px;
-    width:52px;height:52px;
-    background:rgba(201,168,76,.08);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
+  .pillar-desc { color: var(--muted); font-size: 15px; line-height: 1.75; font-weight: 300; }
+
+  /* ── PRODUCTOS ── */
+  .products {
+    padding: 100px 56px; position: relative;
+    background: var(--dark); overflow: hidden;
   }
-  .pillar-name{
-    font-family:'Cormorant Garamond',serif;font-weight:600;
-    font-size:22px;color:var(--dark);margin-bottom:12px;
+  .products-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px;
   }
-  .pillar-desc{color:var(--muted);font-size:14px;line-height:1.7;}
+  .prod-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1px; background: var(--border);
+  }
+  .prod-card {
+    background: var(--dark); padding: 44px 32px;
+    display: flex; flex-direction: column; gap: 18px;
+    position: relative; overflow: hidden; cursor: pointer;
+    transition: background .3s, transform .35s;
+  }
+  .prod-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--blue);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .4s;
+  }
+  .prod-card:hover { background: var(--surface); transform: translateY(-6px); }
+  .prod-card:hover::before { transform: scaleX(1); }
+  .prod-icon {
+    width: 54px; height: 54px;
+    border: 1px solid var(--border); background: rgba(26,107,255,.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  }
+  .prod-name {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 22px; letter-spacing: 1px;
+  }
+  .prod-desc { color: var(--muted); font-size: 13px; line-height: 1.7; font-weight: 300; flex: 1; }
+  .prod-link {
+    font-family: 'Rajdhani', sans-serif; font-weight: 600;
+    font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--cyan); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: gap .3s;
+  }
+  .prod-card:hover .prod-link { gap: 14px; }
 
   /* ── SOCIAL ── */
-  .social{
-    padding:100px 60px;background:var(--beige);
-    position:relative;
+  .social {
+    padding: 100px 56px; background: var(--dark2); position: relative; overflow: hidden;
   }
-  .social-header{
-    display:flex;justify-content:space-between;align-items:flex-end;
-    margin-bottom:64px;
+  .social-watermark {
+    position: absolute; right: -60px; top: 50%; transform: translateY(-50%) rotate(90deg);
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 130px;
+    color: rgba(0,229,255,.025); letter-spacing: 12px; pointer-events: none;
+    white-space: nowrap;
   }
-  .posts-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  .posts-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 16px; margin-top: 64px;
   }
-  .post-card{
-    background:var(--white);border:1px solid var(--border-light);
-    border-radius:4px;overflow:hidden;
-    transition:transform .35s,box-shadow .35s;cursor:pointer;
+  .post-card {
+    aspect-ratio: 1; background: var(--dark);
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    padding: 36px; position: relative; overflow: hidden;
+    transition: border-color .3s, transform .4s;
   }
-  .post-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.08);}
-  .post-visual{
-    height:200px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:56px;position:relative;overflow:hidden;
+  .post-card:hover { border-color: var(--cyan); transform: scale(1.025); }
+  .post-badge {
+    position: absolute; top: 16px; left: 16px;
+    font-family: 'Rajdhani', sans-serif; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--cyan); background: rgba(0,229,255,.1);
+    padding: 4px 10px;
+    clip-path: polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);
   }
-  .post-card:nth-child(1) .post-visual{background:linear-gradient(135deg,#f5e6c8,#e8c878);}
-  .post-card:nth-child(2) .post-visual{background:linear-gradient(135deg,#ede0f8,#c8a0ee);}
-  .post-card:nth-child(3) .post-visual{background:linear-gradient(135deg,var(--beige),var(--beige2));}
-  .post-visual-lbl{
-    position:absolute;top:12px;left:12px;
-    font-size:10px;letter-spacing:2px;text-transform:uppercase;
-    color:rgba(58,47,31,.6);background:rgba(255,255,255,.6);
-    padding:4px 10px;border-radius:20px;font-weight:500;
-    backdrop-filter:blur(4px);
+  .post-icon { font-size: 44px; }
+  .post-ttl {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 18px; letter-spacing: 1px; text-align: center;
   }
-  .post-body{padding:24px;}
-  .post-copy{
-    font-family:'Cormorant Garamond',serif;font-style:italic;
-    font-size:20px;color:var(--dark);line-height:1.4;margin-bottom:10px;
+  .post-copy { color: var(--muted); font-size: 12px; text-align: center; line-height: 1.55; }
+
+  /* ── LOGO SECTION ── */
+  .logo-sec {
+    padding: 100px 56px; background: var(--dark); position: relative;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
   }
-  .post-sub{color:var(--muted);font-size:13px;line-height:1.6;}
-  .post-tag{
-    display:inline-block;margin-top:14px;
-    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
-    color:var(--gold);font-weight:500;
+  .logo-display {
+    display: flex; align-items: center; justify-content: center;
+    height: 320px; border: 1px solid var(--border);
+    background: var(--surface); position: relative; overflow: hidden;
+  }
+  .logo-display::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0,229,255,.04) 0%, transparent 70%);
+  }
+  .big-logo {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 90px; letter-spacing: 8px; color: var(--text);
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .big-apex {
+    width: 14px; height: 14px; background: var(--cyan);
+    border-radius: 50%; margin-bottom: 28px;
+    box-shadow: 0 0 20px var(--cyan), 0 0 50px rgba(0,229,255,.3);
+    animation: apex-pulse 2.4s infinite;
+  }
+  .logo-specs { }
+  .spec-row {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 20px 0; border-bottom: 1px solid var(--border);
+  }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-label {
+    font-family: 'Rajdhani', sans-serif; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--cyan);
+    min-width: 120px; padding-top: 2px;
+  }
+  .spec-val { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .color-chip {
+    display: inline-block; width: 14px; height: 14px; border-radius: 2px;
+    vertical-align: middle; margin-right: 6px; border: 1px solid rgba(255,255,255,.1);
   }
 
-  /* ── VOZ ── */
-  .voice{
-    background:var(--dark2);padding:100px 60px;
-    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
-    position:relative;overflow:hidden;
+  /* ── CTA ── */
+  .cta-sec {
+    padding: 120px 56px; background: var(--dark2);
+    text-align: center; position: relative; overflow: hidden;
   }
-  .voice-bg{
-    position:absolute;right:-100px;top:-100px;
-    width:500px;height:500px;
-    background:radial-gradient(circle,rgba(181,123,238,.06) 0%,transparent 70%);
-    pointer-events:none;
+  .cta-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(26,107,255,.1) 0%, transparent 70%);
   }
-  .voice h2{
-    font-family:'Cormorant Garamond',serif;font-weight:300;
-    font-size:clamp(36px,3.5vw,56px);line-height:1;
-    color:var(--beige);margin-bottom:40px;
+  .cta-sec h2 {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: clamp(52px,6vw,88px); line-height: .95;
+    margin-bottom: 24px; position: relative; z-index: 1;
   }
-  .voice h2 em{font-style:italic;color:var(--gold);}
-  .tone-list{display:flex;flex-direction:column;gap:16px;}
-  .tone-item{
-    display:flex;align-items:flex-start;gap:16px;
-    padding:20px 24px;border:1px solid rgba(201,168,76,.1);
-    background:rgba(255,255,255,.02);border-radius:4px;
-    transition:border-color .3s,background .3s;
+  .cta-sec h2 em { font-style: normal; color: var(--cyan); }
+  .cta-sec p {
+    color: var(--muted); font-size: 17px; max-width: 460px;
+    margin: 0 auto 52px; line-height: 1.75; font-weight: 300;
+    position: relative; z-index: 1;
   }
-  .tone-item:hover{border-color:var(--gold);background:rgba(201,168,76,.04);}
-  .tone-dot{
-    width:8px;height:8px;min-width:8px;
-    border-radius:50%;background:var(--gold);
-    margin-top:6px;box-shadow:0 0 8px rgba(201,168,76,.5);
-  }
-  .tone-txt{color:var(--muted2);font-size:15px;line-height:1.7;font-weight:300;}
-  .voice-copies{padding-top:20px;}
-  .voice-copies h3{
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-    font-size:20px;color:var(--muted2);margin-bottom:28px;letter-spacing:.5px;
-  }
-  .copy-item{
-    padding:24px 0;border-bottom:1px solid rgba(255,255,255,.06);
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-    font-size:clamp(24px,2.5vw,34px);color:var(--beige);line-height:1.2;
-    opacity:.7;transition:opacity .3s,color .3s;cursor:default;
-  }
-  .copy-item:hover{opacity:1;color:var(--gold);}
-  .copy-item:last-child{border-bottom:none;}
-
-  /* ── IDENTIDAD VISUAL ── */
-  .identity{
-    padding:100px 60px;background:var(--white);
-    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
-  }
-  .color-swatches{
-    display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px;
-  }
-  .swatch{
-    height:100px;border-radius:4px;overflow:hidden;position:relative;
-    transition:transform .3s,box-shadow .3s;cursor:default;
-  }
-  .swatch:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(0,0,0,.1);}
-  .swatch-lbl{
-    position:absolute;bottom:0;left:0;right:0;
-    padding:10px 14px;
-    background:rgba(255,255,255,.15);backdrop-filter:blur(8px);
-  }
-  .swatch-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;display:block;}
-  .swatch-hex{font-family:'Outfit',sans-serif;font-size:12px;opacity:.7;}
-  .typo-showcase{margin-top:40px;}
-  .typo-row{
-    padding:24px 0;border-bottom:1px solid var(--border-light);
-    display:flex;flex-direction:column;gap:6px;
-  }
-  .typo-row:last-child{border-bottom:none;}
-  .typo-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;}
-  .typo-sample-serif{
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-    font-size:32px;color:var(--dark);line-height:1;
-  }
-  .typo-sample-sans{
-    font-family:'Outfit',sans-serif;font-weight:500;
-    font-size:22px;color:var(--dark);letter-spacing:1px;text-transform:uppercase;
-  }
-
-  /* ── DIGITAL ── */
-  .digital{
-    padding:100px 60px;background:var(--beige2);
-    position:relative;overflow:hidden;
-  }
-  .steps-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:1px;background:var(--border-light);
-    margin-top:64px;
-    border:1px solid var(--border-light);
-  }
-  .step-card{
-    background:var(--beige2);padding:52px 40px;
-    position:relative;overflow:hidden;
-    transition:background .3s;
-  }
-  .step-card:hover{background:var(--white);}
-  .step-num{
-    font-family:'Cormorant Garamond',serif;font-style:italic;
-    font-size:80px;font-weight:300;color:rgba(201,168,76,.12);
-    line-height:1;margin-bottom:24px;
-  }
-  .step-name{
-    font-family:'Cormorant Garamond',serif;font-weight:600;
-    font-size:28px;color:var(--dark);margin-bottom:12px;
-  }
-  .step-desc{color:var(--muted);font-size:15px;line-height:1.7;}
-  .step-icon{
-    position:absolute;top:40px;right:40px;
-    width:44px;height:44px;border-radius:50%;
-    background:var(--gold);
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;
-    box-shadow:0 6px 20px rgba(201,168,76,.3);
-  }
-
-  /* ── CTA / VISIÓN ── */
-  .cta-sec{
-    background:var(--dark);
-    padding:120px 60px;text-align:center;
-    position:relative;overflow:hidden;
-  }
-  .cta-glow{
-    position:absolute;inset:0;
-    background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,.07) 0%,transparent 70%);
-    pointer-events:none;
-  }
-  .cta-lila{
-    position:absolute;bottom:-100px;right:-100px;
-    width:400px;height:400px;border-radius:50%;
-    background:radial-gradient(circle,rgba(181,123,238,.08) 0%,transparent 70%);
-    pointer-events:none;
-  }
-  .cta-sec h2{
-    font-family:'Cormorant Garamond',serif;font-weight:300;
-    font-size:clamp(52px,5.5vw,84px);line-height:.95;
-    color:var(--beige);margin-bottom:24px;position:relative;z-index:1;
-  }
-  .cta-sec h2 em{font-style:italic;color:var(--gold);}
-  .cta-pillars{
-    display:flex;justify-content:center;gap:60px;
-    margin-bottom:52px;position:relative;z-index:1;
-  }
-  .cta-pillar{
-    font-family:'Cormorant Garamond',serif;font-style:italic;
-    font-size:22px;color:rgba(245,239,230,.45);
-    transition:color .3s;cursor:default;
-  }
-  .cta-pillar:hover{color:var(--gold);}
-  .cta-sec p{
-    color:var(--muted2);font-size:16px;max-width:460px;
-    margin:0 auto 52px;line-height:1.8;font-weight:300;
-    position:relative;z-index:1;
-  }
-  .cta-actions{display:flex;gap:20px;justify-content:center;position:relative;z-index:1;}
+  .cta-actions { display: flex; gap: 20px; justify-content: center; position: relative; z-index: 1; }
 
   /* ── FOOTER ── */
-  footer{
-    padding:44px 60px;
-    border-top:1px solid var(--border-light);
-    background:var(--beige);
-    display:flex;justify-content:space-between;align-items:center;
+  footer {
+    padding: 44px 56px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--dark);
   }
-  .footer-logo{
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-    font-size:22px;color:var(--muted);display:flex;align-items:baseline;gap:6px;
+  .footer-logo {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    font-size: 20px; letter-spacing: 5px; color: var(--muted);
+    display: flex; align-items: center; gap: 2px;
   }
-  .footer-logo strong{font-style:normal;font-weight:600;font-size:18px;color:var(--gold);letter-spacing:3px;}
-  .footer-links{display:flex;gap:32px;}
-  .footer-links a{
-    color:var(--muted);text-decoration:none;font-size:12px;
-    letter-spacing:1.5px;text-transform:uppercase;
-    transition:color .25s;font-weight:400;
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a {
+    color: var(--muted); text-decoration: none; font-size: 12px;
+    letter-spacing: 1.5px; font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase; transition: color .25s;
   }
-  .footer-links a:hover{color:var(--gold);}
-  .footer-copy{color:var(--muted);font-size:12px;}
+  .footer-links a:hover { color: var(--cyan); }
+  .footer-copy { color: var(--muted); font-size: 12px; }
 
   /* ── REVEAL ── */
-  .rev{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s ease;}
-  .rev.in{opacity:1;transform:translateY(0);}
+  .rev { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+  .rev.in { opacity:1; transform:translateY(0); }
   .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+
+  /* scanlines */
+  body::after {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9000;
+    background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 4px);
+  }
 </style>
 </head>
 <body>
 
+<div class="cur-dot" id="dot"></div>
+<div class="cur-ring" id="ring"></div>
+
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo-mark"><strong>UNIQ</strong> beauty</a>
+  <a href="#" class="logo">Z<span class="logo-apex"></span>ENIT</a>
   <ul>
-    <li><a href="#mision">Misión</a></li>
-    <li><a href="#pilares">Pilares</a></li>
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#social">Social</a></li>
 
   </ul>
-  <a href="#cta" class="nav-pill">Explorar</a>
+  <a href="#cta" class="nav-btn">Contacto</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg-blob blob-1"></div>
-  <div class="hero-bg-blob blob-2"></div>
+  <div class="hero-glow"></div>
+  <div class="grid-overlay"></div>
 
   <div class="hero-text">
-    <div class="eyebrow rev">Belleza inclusiva · Sin género · Sin límites</div>
+    <div class="tag rev"><span class="tag-dot"></span>Tecnología del mañana · Disponible hoy</div>
     <h1 class="rev d1">
-      LA BELLEZA<br>
-      NO TIENE<br>
-      <em>REGLAS.</em>
+      <span style="display:block">TECH</span>
+      <span style="display:block" class="h1-outline">PARA</span>
+      <span style="display:block" class="h1-accent">TODOS</span>
     </h1>
-    <p class="hero-quote rev d2">
-      Una marca para quienes se atreven a expresarse sin límites — universal, fluida, <span style="color:var(--lila)">UNIQ.</span>
+    <p class="hero-sub rev d2">
+      ZENIT democratiza el acceso a tecnología de vanguardia, eliminando barreras y complejidades. Porque la innovación es para todos.
     </p>
     <div class="hero-btns rev d3">
-      <a href="#pilares" class="btn-dark">Descubrir la marca</a>
-      <a href="#mision" class="btn-outline">Nuestra misión <span>→</span></a>
+      <a href="#productos" class="btn-fill">Explorar productos</a>
+      <a href="#nosotros" class="btn-ghost">Conoce ZENIT <span>→</span></a>
     </div>
   </div>
 
   <div class="hero-vis rev d2">
-    <div class="petal" style="border-color:rgba(201,168,76,.08)"></div>
-    <div class="petal" style="border-color:rgba(181,123,238,.1)"></div>
-    <div class="product-jar">
-      <div class="jar-label">
-        <strong>UNIQ BEAUTY</strong>
-        Tu ritual,<br>tu obra.
-      </div>
-      <div class="jar-badge">sin<br>reglas</div>
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" id="phone-txt">Z↑</div>
+      <div class="corner-tag">ZENIT</div>
     </div>
   </div>
 </section>
 
-<!-- MANIFIESTO / MISIÓN -->
-<section class="manifesto" id="mision">
-  <div class="manifesto-bg-txt">UNIQ</div>
-  <div class="rev">
-    <p class="manifesto-quote">
-      "Beauty belongs to everyone —<br>
-      unapologetically,<br>universally, <em>UNIQ.</em>"
-    </p>
-  </div>
-  <div class="manifesto-text rev d1">
-    <span class="manifesto-tag">Nuestra misión</span>
-    <p>UNIQ BEAUTY nació de una convicción: la belleza es un acto de expresión personal, no una norma impuesta.</p>
-    <p>Creemos que cada persona merece herramientas para mostrarse tal como es — sin categorías, sin límites, sin reglas. Para todas las personas. Sin excepción.</p>
-    <a href="#pilares" class="btn-outline" style="color:var(--muted2);">Conoce nuestros pilares <span style="color:var(--gold)">→</span></a>
-  </div>
-</section>
+<!-- STATS -->
+<div class="stats">
+  <div class="stat rev"><span class="stat-num" data-to="500">0</span><span class="stat-lbl">Productos</span></div>
+  <div class="stat rev d1"><span class="stat-num" data-to="50">0</span><span class="stat-lbl">Marcas</span></div>
+  <div class="stat rev d2"><span class="stat-num" data-to="24">0</span><span class="stat-lbl">Soporte 24/7</span></div>
+  <div class="stat rev d3"><span class="stat-num" data-to="99">0</span><span class="stat-lbl">% Satisfacción</span></div>
+</div>
 
-<!-- PILARES -->
-<section class="pillars" id="pilares">
-  <div class="pillars-header">
-    <div>
-      <span class="section-eyebrow rev">Personalidad de marca</span>
-      <h2 class="section-heading rev d1">Cuatro pilares<br>que <em>nos definen</em></h2>
-    </div>
-    <p class="section-body rev d2">La identidad de UNIQ BEAUTY se construye sobre valores que van más allá del producto — son una declaración de principios.</p>
-  </div>
+<!-- PILARES / NOSOTROS -->
+<section class="pillars" id="nosotros">
+  <span class="section-tag rev">Personalidad de marca</span>
+  <h2 class="section-title rev d1">QUIÉNES<br>SOMOS</h2>
+  <p class="section-sub rev d2">Cuatro pilares definen cómo ZENIT transforma la relación entre personas y tecnología.</p>
   <div class="pillars-grid">
     <div class="pillar-card rev">
-      <div class="pillar-icon">✨</div>
-      <div class="pillar-name">Expresiva</div>
-      <p class="pillar-desc">Celebramos cada estilo sin filtros ni categorías. Tu expresión es válida tal como es.</p>
+      <div class="pillar-num">01</div>
+      <div class="pillar-name">Innovador</div>
+      <p class="pillar-desc">Siempre a la vanguardia con productos y experiencias tecnológicas de última generación. Primero en integrar lo que viene.</p>
     </div>
     <div class="pillar-card rev d1">
-      <div class="pillar-icon">💫</div>
-      <div class="pillar-name">Empoderada</div>
-      <p class="pillar-desc">Nuestra comunidad lleva la belleza como escudo y declaración de identidad propia.</p>
+      <div class="pillar-num">02</div>
+      <div class="pillar-name">Confiable</div>
+      <p class="pillar-desc">Tecnología verificada, asistencia experta y transacciones seguras en cada paso. Tu confianza es nuestra responsabilidad.</p>
     </div>
     <div class="pillar-card rev d2">
-      <div class="pillar-icon">🎉</div>
-      <div class="pillar-name">Celebratoria</div>
-      <p class="pillar-desc">Cada tono, textura y look merece ser festejado. Aquí no hay looks incorrectos.</p>
+      <div class="pillar-num">03</div>
+      <div class="pillar-name">Accesible</div>
+      <p class="pillar-desc">Lenguaje claro, interfaces intuitivas y soporte humano que simplifica la tecnología para todos, sin excepción.</p>
     </div>
     <div class="pillar-card rev d3">
-      <div class="pillar-icon">🌍</div>
-      <div class="pillar-name">Inclusiva</div>
-      <p class="pillar-desc">Diseñada para todos los géneros, edades y tonos de piel. Sin excepción.</p>
+      <div class="pillar-num">04</div>
+      <div class="pillar-name">Pionero</div>
+      <p class="pillar-desc">Integramos las tecnologías emergentes más relevantes antes que nadie. Porque el futuro no espera.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section class="products" id="productos">
+  <div class="grid-overlay" style="mask-image:none;opacity:.5;"></div>
+  <div class="products-header">
+    <div>
+      <span class="section-tag rev">Catálogo</span>
+      <h2 class="section-title rev d1">NUESTROS<br>PRODUCTOS</h2>
+    </div>
+    <a href="#" class="btn-ghost rev">Ver catálogo completo <span>→</span></a>
+  </div>
+  <div class="prod-grid">
+    <div class="prod-card rev">
+      <div class="prod-icon">📱</div>
+      <div class="prod-name">Smartphones</div>
+      <p class="prod-desc">iPhone, Samsung Galaxy, Google Pixel. Última generación en un solo lugar.</p>
+      <a href="#" class="prod-link">Explorar <span>→</span></a>
+    </div>
+    <div class="prod-card rev d1">
+      <div class="prod-icon">💻</div>
+      <div class="prod-name">Portátiles</div>
+      <p class="prod-desc">MacBook, ultrabooks de alto rendimiento y gaming laptops. Potencia para cada usuario.</p>
+      <a href="#" class="prod-link">Explorar <span>→</span></a>
+    </div>
+    <div class="prod-card rev d2">
+      <div class="prod-icon">📟</div>
+      <div class="prod-name">Tablets</div>
+      <p class="prod-desc">iPad, Galaxy Tab, Surface. Productividad y entretenimiento en formato perfecto.</p>
+      <a href="#" class="prod-link">Explorar <span>→</span></a>
+    </div>
+    <div class="prod-card rev d3">
+      <div class="prod-icon">🎧</div>
+      <div class="prod-name">Audio</div>
+      <p class="prod-desc">Auriculares inalámbricos y altavoces de alta fidelidad. Sonido sin compromisos.</p>
+      <a href="#" class="prod-link">Explorar <span>→</span></a>
     </div>
   </div>
 </section>
 
 <!-- SOCIAL MEDIA -->
 <section class="social" id="social">
-  <div class="social-header">
-    <div>
-      <span class="section-eyebrow rev">Comunidad</span>
-      <h2 class="section-heading rev d1">Contenido que<br><em>conecta y convierte</em></h2>
-    </div>
-    <a href="#" class="btn-outline rev">Ver más posts <span>→</span></a>
-  </div>
+  <div class="social-watermark">SOCIAL</div>
+  <span class="section-tag rev">Comunidad digital</span>
+  <h2 class="section-title rev d1">ZENIT<br>EN REDES</h2>
+  <p class="section-sub rev d2">Contenido que inspira, informa y conecta con lo mejor de la tecnología.</p>
   <div class="posts-grid">
     <div class="post-card rev">
-      <div class="post-visual">
-        <div class="post-visual-lbl">Post de Producto</div>
-        🌟
-      </div>
-      <div class="post-body">
-        <p class="post-copy">"Tu ritual, tu obra."</p>
-        <p class="post-sub">Composición cálida con paleta de tonos dorados. Imagen del producto en primer plano.</p>
-        <span class="post-tag">#UniqBeauty</span>
-      </div>
+      <div class="post-badge">Producto Destacado</div>
+      <div class="post-icon">📱</div>
+      <div class="post-ttl">iPhone 16 Pro</div>
+      <p class="post-copy">En marco geométrico azul eléctrico. El próximo nivel de tu historia.</p>
     </div>
     <div class="post-card rev d1">
-      <div class="post-visual">
-        <div class="post-visual-lbl">Post de Comunidad</div>
-        💜
-      </div>
-      <div class="post-body">
-        <p class="post-copy">"Esto es UNIQ."</p>
-        <p class="post-sub">Repost de usuario con acabado lila. Enviado por @user de la comunidad.</p>
-        <span class="post-tag" style="color:var(--lila)">#MiRitualUNIQ</span>
-      </div>
+      <div class="post-badge">Nueva Llegada</div>
+      <div class="post-icon">🎧</div>
+      <div class="post-ttl">AirPods Pro</div>
+      <p class="post-copy">Con efectos de luz cyan. Cancelación que redefine el silencio.</p>
     </div>
     <div class="post-card rev d2">
-      <div class="post-visual">
-        <div class="post-visual-lbl">Post de Marca</div>
-        🪬
-      </div>
-      <div class="post-body">
-        <p class="post-copy">"Sin reglas. Solo tú."</p>
-        <p class="post-sub">Packaging sobre fondo beige. Luz cálida, fondos beige-dorados.</p>
-        <span class="post-tag">#BeautyBelongsToEveryone</span>
-      </div>
+      <div class="post-badge">Tips Tech</div>
+      <div class="post-icon">⌚</div>
+      <div class="post-ttl">Apple Watch</div>
+      <p class="post-copy">Trucos para tu reloj en azul eléctrico. #TechTips</p>
+    </div>
+    <div class="post-card rev">
+      <div class="post-badge">Oferta Especial</div>
+      <div class="post-icon">🎮</div>
+      <div class="post-ttl">Gaming Week</div>
+      <p class="post-copy">Descuento en accesorios gaming. Badge en esquina, CTA en azul.</p>
+    </div>
+    <div class="post-card rev d1">
+      <div class="post-badge">Comunidad</div>
+      <div class="post-icon">💡</div>
+      <div class="post-ttl">Tu Setup</div>
+      <p class="post-copy">Muéstranos tu espacio tech. #MiSetupZENIT</p>
+    </div>
+    <div class="post-card rev d2">
+      <div class="post-badge">Noticia</div>
+      <div class="post-icon">🚀</div>
+      <div class="post-ttl">Tech News</div>
+      <p class="post-copy">Texto centralizado, icono de campana, hashtags en cyan.</p>
     </div>
   </div>
 </section>
 
 
 
-
-
-<!-- EXPERIENCIA DIGITAL -->
-<section class="digital">
-  <span class="section-eyebrow rev">Experiencia digital</span>
-  <h2 class="section-heading rev d1">Un e-commerce que empodera<br>desde el <em>primer clic</em></h2>
-  <div class="steps-grid">
-    <div class="step-card rev">
-      <div class="step-num">01</div>
-      <div class="step-icon">🔍</div>
-      <div class="step-name">Descubrir</div>
-      <p class="step-desc">Quiz personalizado por estado de piel y tono. Una entrada sin barreras ni categorías.</p>
-    </div>
-    <div class="step-card rev d1">
-      <div class="step-num">02</div>
-      <div class="step-icon">🛍️</div>
-      <div class="step-name">Explorar</div>
-      <p class="step-desc">Categorías neutrales en género. Aquí los productos no tienen dueño, son para todos.</p>
-    </div>
-    <div class="step-card rev d2">
-      <div class="step-num">03</div>
-      <div class="step-icon">🤝</div>
-      <div class="step-name">Pertenecer</div>
-      <p class="step-desc">Reseñas y contenido real de la comunidad. Eres bienvenido tal como eres.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CTA / VISIÓN -->
+<!-- CTA -->
 <section class="cta-sec" id="cta">
   <div class="cta-glow"></div>
-  <div class="cta-lila"></div>
-  <h2 class="rev">UNIQ BEAUTY<br>es un <em>movimiento.</em></h2>
-  <div class="cta-pillars rev d1">
-    <span class="cta-pillar">Empoderar</span>
-    <span class="cta-pillar">Expresar</span>
-    <span class="cta-pillar">Incluir</span>
-  </div>
-  <p class="rev d2">No solo vendemos productos de belleza — construimos un espacio donde cada persona encuentra permiso para ser plenamente sí misma.</p>
-  <div class="cta-actions rev d3">
-    <a href="#" class="btn-dark">Únete al movimiento</a>
-    <a href="#" class="btn-outline" style="color:var(--muted2);">Descubrir productos <span style="color:var(--gold)">→</span></a>
+  <h2 class="rev">EL FUTURO<br>ES <em>ZENIT</em></h2>
+  <p class="rev d1">Transformamos la experiencia de compra tecnológica con diseño vanguardista y accesibilidad total.</p>
+  <div class="cta-actions rev d2">
+    <a href="#" class="btn-fill">Comenzar ahora</a>
+    <a href="#" class="btn-ghost">Habla con nosotros <span>→</span></a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><strong>UNIQ</strong> beauty</div>
-  <span class="footer-copy">© 2025 UNIQ BEAUTY — La belleza no tiene reglas</span>
+  <div class="footer-logo">Z<span style="width:7px;height:7px;background:var(--cyan);border-radius:50%;display:inline-block;margin:0 2px 6px;box-shadow:0 0 8px var(--cyan);"></span>ENIT</div>
+  <span class="footer-copy">© 2025 ZENIT — Simple y segura</span>
   <div class="footer-links">
     <a href="#">Privacidad</a>
     <a href="#">Términos</a>
-    <a href="#">Comunidad</a>
+    <a href="#">Soporte</a>
   </div>
 </footer>
 
 <script>
+// ── CURSOR ──
+const dot = document.getElementById('dot');
+const ring = document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx+'px'; dot.style.top = my+'px';
+});
+(function tick(){
+  rx += (mx-rx)*.12; ry += (my-ry)*.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.opacity='.25';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.opacity='1';});
+});
+
 // ── SCROLL REVEAL ──
 const revEls = document.querySelectorAll('.rev');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1 });
-revEls.forEach(el => obs.observe(el));
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.12});
+revEls.forEach(el=>obs.observe(el));
 
-// ── JAR PARALLAX ──
-document.addEventListener('mousemove', e => {
-  const jar = document.querySelector('.product-jar');
-  if (!jar) return;
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight / 2;
-  const dx = (e.clientX - cx) / cx;
-  const dy = (e.clientY - cy) / cy;
-  jar.style.transform = `translateY(${-8 + dy * -6}px) rotate(${-3 + dx * 2}deg)`;
-});
+// ── COUNTER ──
+function count(el,to,dur){
+  let v=0,step=to/(dur/16);
+  const t=setInterval(()=>{
+    v+=step; if(v>=to){v=to;clearInterval(t);}
+    el.textContent=Math.floor(v);
+  },16);
+}
+const nums = document.querySelectorAll('.stat-num');
+const cobs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){count(e.target,+e.target.dataset.to,1400);cobs.unobserve(e.target);}
+  });
+},{threshold:.5});
+nums.forEach(el=>cobs.observe(el));
 
-// ── COPY HOVER SOUND (visual feedback) ──
-document.querySelectorAll('.copy-item').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    el.style.paddingLeft = '20px';
-    el.style.borderLeft = '2px solid var(--gold)';
-    el.style.transition = 'all .3s';
-  });
-  el.addEventListener('mouseleave', () => {
-    el.style.paddingLeft = '0';
-    el.style.borderLeft = 'none';
-  });
-});
+// ── PHONE TEXT CYCLE ──
+const words=['Z↑','TECH','5G·AI','ZENIT','NEW'];
+let wi=0;
+const pTxt=document.getElementById('phone-txt');
+pTxt.style.transition='opacity .3s';
+setInterval(()=>{
+  wi=(wi+1)%words.length;
+  pTxt.style.opacity='0';
+  setTimeout(()=>{pTxt.textContent=words[wi];pTxt.style.opacity='1';},320);
+},2200);
 </script>
 </body>
 </html>
