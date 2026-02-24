@@ -23,13 +23,136 @@
   html { scroll-behavior: smooth; }
   body { background: var(--dark); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
 
-  /* ── CURSOR solo mouse ── */
+  /* ── CURSOR ── */
   @media (pointer: fine) {
     body { cursor: none; }
-    #cur-dot { display: block; width: 8px; height: 8px; background: var(--cyan); border-radius: 50%; position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%,-50%); box-shadow: 0 0 10px var(--cyan); }
-    #cur-ring { display: block; width: 32px; height: 32px; border: 1px solid rgba(0,229,255,.4); border-radius: 50%; position: fixed; z-index: 9998; pointer-events: none; transform: translate(-50%,-50%); transition: width .25s, height .25s, opacity .25s; }
+    * { cursor: none !important; }
   }
-  #cur-dot, #cur-ring { display: none; }
+
+  /* Punto central pequeño y brillante */
+  #cur-dot {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+      0 0 0 2px rgba(0,229,255,.5),
+      0 0 12px var(--cyan),
+      0 0 28px rgba(0,229,255,.6),
+      0 0 50px rgba(0,229,255,.2);
+    transition: width .15s, height .15s, box-shadow .2s;
+  }
+
+  /* Anillo exterior con scanner effect */
+  #cur-ring {
+    display: none;
+    position: fixed;
+    z-index: 9998;
+    pointer-events: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid var(--cyan);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0,229,255,.4), inset 0 0 10px rgba(0,229,255,.05);
+    transition: width .3s cubic-bezier(.2,.9,.4,1), height .3s cubic-bezier(.2,.9,.4,1), border-color .25s, opacity .25s, box-shadow .25s;
+  }
+
+  /* Segmentos del anillo (esquinas tipo HUD) */
+  #cur-ring::before,
+  #cur-ring::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--cyan);
+    border-style: solid;
+  }
+  #cur-ring::before {
+    top: -1px; left: -1px;
+    border-width: 2px 0 0 2px;
+  }
+  #cur-ring::after {
+    bottom: -1px; right: -1px;
+    border-width: 0 2px 2px 0;
+  }
+
+  /* Texto de estado del cursor */
+  #cur-txt {
+    display: none;
+    position: fixed;
+    z-index: 9997;
+    pointer-events: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(2px, 22px);
+    transition: opacity .2s;
+  }
+
+  /* Cruz de mira central */
+  #cur-cross {
+    display: none;
+    position: fixed;
+    z-index: 9996;
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+    transition: opacity .2s;
+  }
+  #cur-cross::before,
+  #cur-cross::after {
+    content: '';
+    position: absolute;
+    background: var(--cyan);
+  }
+  #cur-cross::before { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+  #cur-cross::after  { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+
+  @media (pointer: fine) {
+    #cur-dot, #cur-ring, #cur-txt, #cur-cross { display: block; }
+
+    /* Hover state */
+    body.cur-active #cur-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,229,255,.3), 0 0 20px var(--cyan), 0 0 50px rgba(0,229,255,.5);
+    }
+    body.cur-active #cur-ring {
+      width: 70px;
+      height: 70px;
+      border-color: rgba(0,229,255,.5);
+      box-shadow: 0 0 20px rgba(0,229,255,.3), inset 0 0 20px rgba(0,229,255,.05);
+    }
+    body.cur-active #cur-txt { opacity: 1; }
+    body.cur-active #cur-cross { opacity: 0.6; }
+
+    /* Click state */
+    body.cur-click #cur-dot {
+      width: 18px;
+      height: 18px;
+      background: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(0,229,255,.2), 0 0 30px var(--cyan), 0 0 60px rgba(0,229,255,.6);
+    }
+    body.cur-click #cur-ring {
+      width: 30px;
+      height: 30px;
+      opacity: 0.3;
+    }
+  }
 
   /* ── GRID BG ── */
   .grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px), linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px); background-size: 64px 64px; }
@@ -50,7 +173,7 @@
   .nav-cta { font-family: 'Rajdhani',sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); border: 1px solid var(--cyan); background: transparent; padding: 7px 16px; clip-path: polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%); transition: background .25s,color .25s; text-decoration: none; white-space: nowrap; }
   .nav-cta:hover { background: var(--cyan); color: var(--dark); }
 
-  .burger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+  .burger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; padding: 6px; }
   .burger span { display: block; width: 22px; height: 2px; background: var(--text); transition: transform .3s, opacity .3s; border-radius: 1px; }
   .burger.on span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .burger.on span:nth-child(2) { opacity: 0; }
@@ -74,9 +197,9 @@
   .s-tag { display: block; font-family: 'Rajdhani',sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
   .s-title { font-family: 'Rajdhani',sans-serif; font-weight: 700; font-size: clamp(30px,6vw,58px); line-height: .93; margin-bottom: 14px; }
   .s-sub { color: var(--muted); font-size: 15px; line-height: 1.8; font-weight: 300; }
-  .btn-fill { font-family: 'Rajdhani',sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: var(--blue); border: none; padding: 14px 30px; cursor: pointer; clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition: background .3s,box-shadow .3s; text-decoration: none; display: inline-block; }
+  .btn-fill { font-family: 'Rajdhani',sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: var(--blue); border: none; padding: 14px 30px; clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition: background .3s,box-shadow .3s; text-decoration: none; display: inline-block; }
   .btn-fill:hover { background: var(--cyan); color: var(--dark); box-shadow: 0 0 30px rgba(0,229,255,.35); }
-  .btn-ghost { font-family: 'Rajdhani',sans-serif; font-weight: 500; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: color .3s; text-decoration: none; }
+  .btn-ghost { font-family: 'Rajdhani',sans-serif; font-weight: 500; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: none; border: none; display: inline-flex; align-items: center; gap: 10px; transition: color .3s; text-decoration: none; }
   .btn-ghost span { transition: transform .3s; }
   .btn-ghost:hover { color: var(--text); }
   .btn-ghost:hover span { transform: translateX(5px); }
@@ -93,7 +216,6 @@
   .hero-p { color: var(--muted); font-size: 15px; line-height: 1.8; font-weight: 300; margin-bottom: 36px; max-width: 500px; }
   .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 
-  /* phone visual */
   .hero-vis { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; height: 260px; }
   .hring { position: absolute; border-radius: 50%; border: 1px solid rgba(0,229,255,.07); }
   .hr1{width:230px;height:230px;animation:spin 28s linear infinite;}
@@ -136,7 +258,7 @@
   .products { padding:64px 20px; position:relative; background:var(--dark); overflow:hidden; }
   .prod-hdr { display:flex; flex-direction:column; gap:16px; margin-bottom:40px; }
   .prod-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); }
-  .prod-card { background:var(--dark); padding:24px 18px; display:flex; flex-direction:column; gap:12px; position:relative; overflow:hidden; cursor:pointer; transition:background .3s; }
+  .prod-card { background:var(--dark); padding:24px 18px; display:flex; flex-direction:column; gap:12px; position:relative; overflow:hidden; transition:background .3s; }
   .prod-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform .4s; }
   .prod-card:hover { background:var(--surface); }
   .prod-card:hover::before { transform:scaleX(1); }
@@ -168,13 +290,11 @@
   .jobs .grid-bg { opacity:.4; }
   .jobs-inner { display:flex; flex-direction:column; gap:48px; }
   .jobs-intro .s-sub { max-width:520px; margin-bottom:32px; }
-
   .jobs-perks { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px; }
   .perk { display:flex; align-items:flex-start; gap:12px; padding:16px; border:1px solid var(--border); background:var(--faint); }
   .perk-icon { font-size:20px; flex-shrink:0; margin-top:2px; }
   .perk-txt strong { display:block; font-family:'Rajdhani',sans-serif; font-size:14px; letter-spacing:1px; color:var(--text); margin-bottom:2px; }
   .perk-txt span { font-size:12px; color:var(--muted); line-height:1.5; }
-
   .jobs-form-wrap { background:var(--dark2); border:1px solid var(--border); padding:32px 24px; position:relative; }
   .jobs-form-wrap::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
   .form-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:22px; letter-spacing:1px; color:var(--cyan); margin-bottom:4px; }
@@ -182,43 +302,29 @@
   .form-row { display:grid; grid-template-columns:1fr; gap:14px; margin-bottom:14px; }
   .form-group { display:flex; flex-direction:column; gap:6px; }
   .form-group label { font-family:'Rajdhani',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    background:var(--mid); border:1px solid var(--border); color:var(--text);
-    font-family:'DM Sans',sans-serif; font-size:14px; padding:12px 14px;
-    outline:none; transition:border-color .25s; width:100%;
-    appearance:none; -webkit-appearance:none;
-  }
+  .form-group input, .form-group select, .form-group textarea { background:var(--mid); border:1px solid var(--border); color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; padding:12px 14px; outline:none; transition:border-color .25s; width:100%; appearance:none; -webkit-appearance:none; }
   .form-group input::placeholder, .form-group textarea::placeholder { color:var(--muted); }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--cyan); }
-  .form-group select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300E5FF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:calc(100% - 14px) center; padding-right:36px; cursor:pointer; }
+  .form-group select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300E5FF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:calc(100% - 14px) center; padding-right:36px; }
   .form-group select option { background:var(--mid); }
   .form-group textarea { resize:vertical; min-height:100px; }
-  .upload-area { border:1px dashed rgba(0,229,255,.25); padding:20px; text-align:center; cursor:pointer; transition:border-color .25s,background .25s; position:relative; }
+  .upload-area { border:1px dashed rgba(0,229,255,.25); padding:20px; text-align:center; transition:border-color .25s,background .25s; position:relative; }
   .upload-area:hover { border-color:var(--cyan); background:var(--faint); }
-  .upload-area input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; }
+  .upload-area input[type="file"] { position:absolute; inset:0; opacity:0; width:100%; }
   .upload-icon { font-size:24px; margin-bottom:8px; display:block; }
   .upload-txt { font-size:13px; color:var(--muted); line-height:1.5; }
   .upload-txt span { color:var(--cyan); }
   .form-check { display:flex; align-items:flex-start; gap:10px; margin:18px 0; }
-  .form-check input[type="checkbox"] { width:16px; height:16px; min-width:16px; margin-top:2px; accent-color:var(--cyan); cursor:pointer; }
-  .form-check label { font-size:12px; color:var(--muted); line-height:1.6; cursor:pointer; }
+  .form-check input[type="checkbox"] { width:16px; height:16px; min-width:16px; margin-top:2px; accent-color:var(--cyan); }
+  .form-check label { font-size:12px; color:var(--muted); line-height:1.6; }
   .form-check label a { color:var(--cyan); text-decoration:none; }
-  .btn-submit { width:100%; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; letter-spacing:3px; text-transform:uppercase; color:#fff; background:var(--blue); border:none; padding:16px; cursor:pointer; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition:background .3s,box-shadow .3s; }
+  .btn-submit { width:100%; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; letter-spacing:3px; text-transform:uppercase; color:#fff; background:var(--blue); border:none; padding:16px; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition:background .3s,box-shadow .3s; }
   .btn-submit:hover { background:var(--cyan); color:var(--dark); box-shadow:0 0 30px rgba(0,229,255,.3); }
   .form-msg { display:none; margin-top:16px; padding:14px 18px; border:1px solid rgba(0,229,255,.3); background:rgba(0,229,255,.05); font-size:13px; color:var(--cyan); font-family:'Rajdhani',sans-serif; letter-spacing:1px; }
   .form-msg.show { display:block; }
-
   @media(min-width:640px){ .form-row{grid-template-columns:1fr 1fr;} }
   @media(min-width:768px){ .jobs-perks{grid-template-columns:repeat(4,1fr);} }
-  @media(min-width:1024px){
-    .jobs { padding:100px 56px; }
-    .jobs-inner { flex-direction:row; gap:64px; align-items:flex-start; }
-    .jobs-intro { flex:0 0 380px; }
-    .jobs-form-wrap { flex:1; padding:48px 40px; }
-    .form-title { font-size:26px; }
-  }
+  @media(min-width:1024px){ .jobs{padding:100px 56px;} .jobs-inner{flex-direction:row;gap:64px;align-items:flex-start;} .jobs-intro{flex:0 0 380px;} .jobs-form-wrap{flex:1;padding:48px 40px;} .form-title{font-size:26px;} }
 
   /* ── CTA ── */
   .cta { padding:72px 20px; background:var(--dark2); text-align:center; position:relative; overflow:hidden; }
@@ -249,8 +355,11 @@
 </head>
 <body>
 
+<!-- CUSTOM CURSOR -->
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
+<div id="cur-txt">acceder</div>
+<div id="cur-cross"></div>
 
 <!-- NAV -->
 <nav>
@@ -352,7 +461,6 @@
 <section class="jobs" id="jobs">
   <div class="grid-bg"></div>
   <div class="jobs-inner">
-
     <div class="jobs-intro">
       <span class="s-tag rev">Carreras</span>
       <h2 class="s-title rev d1">TRABAJA<br>CON<br>NOSOTROS</h2>
@@ -364,60 +472,34 @@
         <div class="perk"><div class="perk-icon">🤝</div><div class="perk-txt"><strong>Cultura</strong><span>Equipo diverso e inclusivo</span></div></div>
       </div>
     </div>
-
     <div class="jobs-form-wrap rev d2">
       <div class="form-title">Postúlate ahora</div>
       <p class="form-sub">Completa el formulario y nos pondremos en contacto contigo. Todas las posiciones son bienvenidas.</p>
-
       <form id="job-form" novalidate>
         <div class="form-row">
-          <div class="form-group">
-            <label for="jname">Nombre completo *</label>
-            <input type="text" id="jname" placeholder="Tu nombre" required>
-          </div>
-          <div class="form-group">
-            <label for="jemail">Correo electrónico *</label>
-            <input type="email" id="jemail" placeholder="tu@correo.com" required>
-          </div>
+          <div class="form-group"><label for="jname">Nombre completo *</label><input type="text" id="jname" placeholder="Tu nombre" required></div>
+          <div class="form-group"><label for="jemail">Correo electrónico *</label><input type="email" id="jemail" placeholder="tu@correo.com" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label for="jphone">Teléfono</label>
-            <input type="tel" id="jphone" placeholder="+57 300 000 0000">
-          </div>
-          <div class="form-group">
-            <label for="jarea">Área de interés *</label>
+          <div class="form-group"><label for="jphone">Teléfono</label><input type="tel" id="jphone" placeholder="+57 300 000 0000"></div>
+          <div class="form-group"><label for="jarea">Área de interés *</label>
             <select id="jarea" required>
               <option value="" disabled selected>Selecciona un área</option>
-              <option>Ventas y Comercial</option>
-              <option>Tecnología y Soporte</option>
-              <option>Marketing Digital</option>
-              <option>Logística y Operaciones</option>
-              <option>Diseño y UX</option>
-              <option>Finanzas y Administración</option>
-              <option>Otra</option>
+              <option>Ventas y Comercial</option><option>Tecnología y Soporte</option>
+              <option>Marketing Digital</option><option>Logística y Operaciones</option>
+              <option>Diseño y UX</option><option>Finanzas y Administración</option><option>Otra</option>
             </select>
           </div>
         </div>
         <div class="form-row" style="grid-template-columns:1fr;">
-          <div class="form-group">
-            <label for="jlinkedin">LinkedIn / Portafolio</label>
-            <input type="url" id="jlinkedin" placeholder="https://linkedin.com/in/tu-perfil">
-          </div>
+          <div class="form-group"><label for="jlinkedin">LinkedIn / Portafolio</label><input type="url" id="jlinkedin" placeholder="https://linkedin.com/in/tu-perfil"></div>
         </div>
         <div class="form-row" style="grid-template-columns:1fr;">
-          <div class="form-group">
-            <label for="jmsg">¿Por qué quieres unirte a ZENIT? *</label>
-            <textarea id="jmsg" placeholder="Cuéntanos sobre ti, tu experiencia y motivación..." required></textarea>
-          </div>
+          <div class="form-group"><label for="jmsg">¿Por qué quieres unirte a ZENIT? *</label><textarea id="jmsg" placeholder="Cuéntanos sobre ti, tu experiencia y motivación..." required></textarea></div>
         </div>
         <div class="form-group" style="margin-bottom:14px;">
           <label>CV / Hoja de vida</label>
-          <div class="upload-area">
-            <input type="file" accept=".pdf,.doc,.docx" id="jcv">
-            <span class="upload-icon">📎</span>
-            <p class="upload-txt">Arrastra tu archivo aquí o <span>selecciona</span><br><small>PDF, DOC hasta 5MB</small></p>
-          </div>
+          <div class="upload-area"><input type="file" accept=".pdf,.doc,.docx" id="jcv"><span class="upload-icon">📎</span><p class="upload-txt">Arrastra tu archivo aquí o <span>selecciona</span><br><small>PDF, DOC hasta 5MB</small></p></div>
         </div>
         <div class="form-check">
           <input type="checkbox" id="jterms" required>
@@ -427,7 +509,6 @@
         <div class="form-msg" id="jmsg-ok">✓ &nbsp;Postulación recibida. Te contactaremos pronto.</div>
       </form>
     </div>
-
   </div>
 </section>
 
@@ -450,17 +531,78 @@
 </footer>
 
 <script>
-// Cursor
-if(window.matchMedia('(pointer:fine)').matches){
-  const d=document.getElementById('cur-dot'),r=document.getElementById('cur-ring');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.left=mx+'px';d.style.top=my+'px';});
-  (function t(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t);})();
-  document.querySelectorAll('a,button,input,select,textarea').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{r.style.width='52px';r.style.height='52px';r.style.opacity='.2';});
-    el.addEventListener('mouseleave',()=>{r.style.width='32px';r.style.height='32px';r.style.opacity='1';});
+// ── CURSOR ZENIT ──
+if (window.matchMedia('(pointer:fine)').matches) {
+  const dot   = document.getElementById('cur-dot');
+  const ring  = document.getElementById('cur-ring');
+  const txt   = document.getElementById('cur-txt');
+  const cross = document.getElementById('cur-cross');
+
+  let mx = 0, my = 0;
+  let rx = 0, ry = 0;
+  let cx = 0, cy = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    // Punto: instantáneo
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+    // Texto sigue al punto
+    txt.style.left = (mx + 16) + 'px';
+    txt.style.top  = (my + 18) + 'px';
+    // Cruz sigue instantáneo
+    cross.style.left = mx + 'px';
+    cross.style.top  = my + 'px';
+  });
+
+  // Anillo con inercia lenta para efecto arrastrado
+  (function loop() {
+    rx += (mx - rx) * 0.09;
+    ry += (my - ry) * 0.09;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  // Mapeo de labels por tipo de elemento
+  const labelMap = [
+    ['a[href]',      'ver →'],
+    ['.btn-fill',    'acceder'],
+    ['.btn-ghost',   'ir →'],
+    ['.pcard',       'leer'],
+    ['.prod-card',   'explorar'],
+    ['.s-card',      'social'],
+    ['.stat',        'datos'],
+    ['.phone',       'ZENIT'],
+  ];
+
+  const interactivos = 'a, button, .pcard, .prod-card, .s-card, .stat, .phone, input, select, textarea, .upload-area';
+  document.querySelectorAll(interactivos).forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      document.body.classList.add('cur-active');
+      let label = 'ver →';
+      for (const [sel, lbl] of labelMap) {
+        if (el.matches(sel)) { label = lbl; break; }
+      }
+      txt.textContent = label;
+    });
+    el.addEventListener('mouseleave', () => {
+      document.body.classList.remove('cur-active');
+      txt.textContent = 'acceder';
+    });
+  });
+
+  // Clic
+  document.addEventListener('mousedown', () => {
+    document.body.classList.add('cur-click');
+    document.body.classList.remove('cur-active');
+  });
+  document.addEventListener('mouseup', () => {
+    document.body.classList.remove('cur-click');
   });
 }
+
 // Nav mobile
 const brg=document.getElementById('brg'),nm=document.getElementById('nmenu');
 brg.addEventListener('click',()=>{brg.classList.toggle('on');nm.classList.toggle('on');});
@@ -477,8 +619,8 @@ const pt=document.getElementById('ptxt');pt.style.transition='opacity .3s';
 setInterval(()=>{wi=(wi+1)%ws.length;pt.style.opacity='0';setTimeout(()=>{pt.textContent=ws[wi];pt.style.opacity='1';},320);},2200);
 // File upload label
 document.getElementById('jcv').addEventListener('change',function(){
-  const txt=this.parentElement.querySelector('.upload-txt');
-  if(this.files[0]) txt.innerHTML=`<span style="color:var(--cyan)">${this.files[0].name}</span>`;
+  const t=this.parentElement.querySelector('.upload-txt');
+  if(this.files[0]) t.innerHTML=`<span style="color:var(--cyan)">${this.files[0].name}</span>`;
 });
 // Form submit
 document.getElementById('job-form').addEventListener('submit',function(e){
