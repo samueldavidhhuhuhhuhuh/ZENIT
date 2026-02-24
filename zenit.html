@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNIQ BEAUTY — La belleza no tiene reglas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:   #C9A84C;
+    --lila:   #B57BEE;
+    --beige:  #F5EFE6;
+    --beige2: #EDE4D6;
+    --white:  #FFFFFF;
+    --dark:   #1C1510;
+    --dark2:  #251C13;
+    --mid:    #302417;
+    --text:   #3A2F1F;
+    --muted:  #8C7860;
+    --muted2: #BCA98C;
+    --border-light: rgba(201,168,76,.18);
+    --border-lila: rgba(181,123,238,.15);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--beige);
+    color:var(--text);
+    font-family:'Outfit',sans-serif;
+    overflow-x:hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    background-repeat:repeat;background-size:200px 200px;
+    opacity:.5;
+  }
+
+  /* ── NAV ── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    padding:24px 60px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(245,239,230,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border-light);
+  }
+  .logo-mark{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-weight:300;font-size:28px;letter-spacing:3px;
+    color:var(--dark);text-decoration:none;
+    display:flex;align-items:baseline;gap:6px;
+  }
+  .logo-mark strong{
+    font-style:normal;font-weight:600;letter-spacing:4px;font-size:22px;
+    color:var(--gold);
+  }
+  nav ul{list-style:none;display:flex;gap:40px;}
+  nav ul a{
+    color:var(--muted);text-decoration:none;font-size:13px;
+    letter-spacing:2px;text-transform:uppercase;font-weight:400;
+    transition:color .25s;
+  }
+  nav ul a:hover{color:var(--gold);}
+  .nav-pill{
+    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
+    color:var(--white);background:var(--dark);
+    padding:10px 28px;border-radius:30px;
+    border:none;cursor:pointer;transition:background .25s;
+    text-decoration:none;
+  }
+  .nav-pill:hover{background:var(--gold);}
+
+  /* ── HERO ── */
+  .hero{
+    min-height:100vh;display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:center;
+    padding:120px 60px 80px;
+    position:relative;overflow:hidden;
+  }
+  .hero-bg-blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    pointer-events:none;
+  }
+  .blob-1{
+    width:500px;height:500px;
+    background:radial-gradient(circle,rgba(201,168,76,.18) 0%,transparent 70%);
+    top:-100px;right:0;
+  }
+  .blob-2{
+    width:350px;height:350px;
+    background:radial-gradient(circle,rgba(181,123,238,.12) 0%,transparent 70%);
+    bottom:-50px;left:20%;
+  }
+
+  .hero-text{position:relative;z-index:2;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:28px;font-weight:500;
+  }
+  .eyebrow::before{
+    content:'';display:block;width:32px;height:1px;
+    background:var(--gold);
+  }
+  h1{
+    font-family:'Cormorant Garamond',serif;font-weight:300;
+    font-size:clamp(58px,5.5vw,92px);line-height:.95;
+    letter-spacing:-1px;margin-bottom:32px;color:var(--dark);
+  }
+  h1 em{font-style:italic;color:var(--gold);}
+  h1 .h1-lila{color:var(--lila);font-style:italic;}
+  .hero-quote{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:20px;color:var(--muted);line-height:1.65;
+    max-width:420px;margin-bottom:52px;
+    border-left:2px solid var(--gold);padding-left:20px;
+  }
+  .hero-btns{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+  .btn-dark{
+    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
+    color:var(--white);background:var(--dark);
+    padding:14px 36px;border-radius:40px;border:none;
+    cursor:pointer;transition:background .3s,transform .3s;
+    text-decoration:none;display:inline-block;
+  }
+  .btn-dark:hover{background:var(--gold);transform:translateY(-2px);}
+  .btn-outline{
+    font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
+    color:var(--muted);background:transparent;
+    padding:14px 0;border:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:10px;
+    transition:color .3s;text-decoration:none;
+  }
+  .btn-outline span{transition:transform .3s;}
+  .btn-outline:hover{color:var(--dark);}
+  .btn-outline:hover span{transform:translateX(5px);}
+
+  /* ── HERO VISUAL ── */
+  .hero-vis{
+    position:relative;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    height:580px;
+  }
+  .product-jar{
+    width:260px;height:340px;
+    background:linear-gradient(145deg,#ede4d4 0%,#d4c4a0 60%,#c9a84c33 100%);
+    border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;
+    border:1px solid rgba(201,168,76,.3);
+    box-shadow:
+      inset 0 20px 40px rgba(255,255,255,.5),
+      0 30px 80px rgba(201,168,76,.15),
+      0 0 0 1px rgba(201,168,76,.1);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    animation:float-gentle 5s ease-in-out infinite;
+  }
+  @keyframes float-gentle{
+    0%,100%{transform:translateY(0) rotate(-3deg);}
+    50%{transform:translateY(-16px) rotate(-3deg);}
+  }
+  .jar-label{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:18px;font-weight:300;color:var(--dark);
+    text-align:center;line-height:1.5;
+  }
+  .jar-label strong{
+    display:block;font-style:normal;font-weight:600;
+    font-family:'Outfit',sans-serif;letter-spacing:3px;
+    font-size:12px;color:var(--gold);text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .jar-badge{
+    position:absolute;bottom:-16px;right:-16px;
+    width:70px;height:70px;
+    background:var(--lila);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:13px;color:var(--white);text-align:center;line-height:1.3;
+    box-shadow:0 8px 24px rgba(181,123,238,.4);
+  }
+  .petal{
+    position:absolute;
+    width:140px;height:140px;
+    border-radius:50%;
+    border:1px solid var(--border-light);
+    animation:spin-slow linear infinite;
+  }
+  .petal:nth-child(1){width:500px;height:500px;animation-duration:35s;}
+  .petal:nth-child(2){width:370px;height:370px;border-color:var(--border-lila);animation-duration:22s;animation-direction:reverse;}
+  @keyframes spin-slow{to{transform:rotate(360deg);}}
+
+  /* ── MANIFIESTO ── */
+  .manifesto{
+    background:var(--dark);
+    padding:100px 60px;
+    position:relative;overflow:hidden;
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  }
+  .manifesto-quote{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:clamp(28px,3vw,44px);color:var(--beige);
+    line-height:1.35;
+  }
+  .manifesto-quote em{color:var(--gold);font-style:normal;}
+  .manifesto-text p{
+    color:var(--muted2);font-size:16px;line-height:1.8;font-weight:300;
+    margin-bottom:24px;
+  }
+  .manifesto-text p:last-child{margin-bottom:0;}
+  .manifesto-tag{
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:20px;display:block;font-weight:500;
+  }
+  .manifesto-bg-txt{
+    position:absolute;bottom:-40px;left:-20px;
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:180px;color:rgba(201,168,76,.04);line-height:1;
+    pointer-events:none;letter-spacing:-5px;
+  }
+
+  /* ── PILARES ── */
+  .pillars{
+    padding:100px 60px;background:var(--beige2);
+    position:relative;overflow:hidden;
+  }
+  .pillars-header{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;
+    margin-bottom:64px;
+  }
+  .section-eyebrow{
+    display:block;font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:14px;font-weight:500;
+  }
+  .section-heading{
+    font-family:'Cormorant Garamond',serif;font-weight:300;
+    font-size:clamp(36px,3.5vw,58px);line-height:.95;color:var(--dark);
+  }
+  .section-heading em{font-style:italic;color:var(--gold);}
+  .section-body{color:var(--muted);font-size:16px;line-height:1.75;font-weight:300;}
+  .pillars-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  }
+  .pillar-card{
+    background:var(--white);border:1px solid var(--border-light);
+    padding:40px 28px;border-radius:4px;
+    position:relative;overflow:hidden;cursor:default;
+    transition:transform .35s,box-shadow .35s,border-color .35s;
+  }
+  .pillar-card::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;
+    height:3px;background:var(--gold);
+    transform:scaleX(0);transform-origin:left;transition:transform .4s;
+  }
+  .pillar-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(201,168,76,.12);border-color:var(--gold);}
+  .pillar-card:hover::after{transform:scaleX(1);}
+  .pillar-icon{
+    font-size:28px;margin-bottom:20px;
+    width:52px;height:52px;
+    background:rgba(201,168,76,.08);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pillar-name{
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:22px;color:var(--dark);margin-bottom:12px;
+  }
+  .pillar-desc{color:var(--muted);font-size:14px;line-height:1.7;}
+
+  /* ── SOCIAL ── */
+  .social{
+    padding:100px 60px;background:var(--beige);
+    position:relative;
+  }
+  .social-header{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:64px;
+  }
+  .posts-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .post-card{
+    background:var(--white);border:1px solid var(--border-light);
+    border-radius:4px;overflow:hidden;
+    transition:transform .35s,box-shadow .35s;cursor:pointer;
+  }
+  .post-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.08);}
+  .post-visual{
+    height:200px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:56px;position:relative;overflow:hidden;
+  }
+  .post-card:nth-child(1) .post-visual{background:linear-gradient(135deg,#f5e6c8,#e8c878);}
+  .post-card:nth-child(2) .post-visual{background:linear-gradient(135deg,#ede0f8,#c8a0ee);}
+  .post-card:nth-child(3) .post-visual{background:linear-gradient(135deg,var(--beige),var(--beige2));}
+  .post-visual-lbl{
+    position:absolute;top:12px;left:12px;
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    color:rgba(58,47,31,.6);background:rgba(255,255,255,.6);
+    padding:4px 10px;border-radius:20px;font-weight:500;
+    backdrop-filter:blur(4px);
+  }
+  .post-body{padding:24px;}
+  .post-copy{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:20px;color:var(--dark);line-height:1.4;margin-bottom:10px;
+  }
+  .post-sub{color:var(--muted);font-size:13px;line-height:1.6;}
+  .post-tag{
+    display:inline-block;margin-top:14px;
+    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--gold);font-weight:500;
+  }
+
+  /* ── VOZ ── */
+  .voice{
+    background:var(--dark2);padding:100px 60px;
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+    position:relative;overflow:hidden;
+  }
+  .voice-bg{
+    position:absolute;right:-100px;top:-100px;
+    width:500px;height:500px;
+    background:radial-gradient(circle,rgba(181,123,238,.06) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .voice h2{
+    font-family:'Cormorant Garamond',serif;font-weight:300;
+    font-size:clamp(36px,3.5vw,56px);line-height:1;
+    color:var(--beige);margin-bottom:40px;
+  }
+  .voice h2 em{font-style:italic;color:var(--gold);}
+  .tone-list{display:flex;flex-direction:column;gap:16px;}
+  .tone-item{
+    display:flex;align-items:flex-start;gap:16px;
+    padding:20px 24px;border:1px solid rgba(201,168,76,.1);
+    background:rgba(255,255,255,.02);border-radius:4px;
+    transition:border-color .3s,background .3s;
+  }
+  .tone-item:hover{border-color:var(--gold);background:rgba(201,168,76,.04);}
+  .tone-dot{
+    width:8px;height:8px;min-width:8px;
+    border-radius:50%;background:var(--gold);
+    margin-top:6px;box-shadow:0 0 8px rgba(201,168,76,.5);
+  }
+  .tone-txt{color:var(--muted2);font-size:15px;line-height:1.7;font-weight:300;}
+  .voice-copies{padding-top:20px;}
+  .voice-copies h3{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:20px;color:var(--muted2);margin-bottom:28px;letter-spacing:.5px;
+  }
+  .copy-item{
+    padding:24px 0;border-bottom:1px solid rgba(255,255,255,.06);
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:clamp(24px,2.5vw,34px);color:var(--beige);line-height:1.2;
+    opacity:.7;transition:opacity .3s,color .3s;cursor:default;
+  }
+  .copy-item:hover{opacity:1;color:var(--gold);}
+  .copy-item:last-child{border-bottom:none;}
+
+  /* ── IDENTIDAD VISUAL ── */
+  .identity{
+    padding:100px 60px;background:var(--white);
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+  }
+  .color-swatches{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px;
+  }
+  .swatch{
+    height:100px;border-radius:4px;overflow:hidden;position:relative;
+    transition:transform .3s,box-shadow .3s;cursor:default;
+  }
+  .swatch:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(0,0,0,.1);}
+  .swatch-lbl{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:10px 14px;
+    background:rgba(255,255,255,.15);backdrop-filter:blur(8px);
+  }
+  .swatch-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;display:block;}
+  .swatch-hex{font-family:'Outfit',sans-serif;font-size:12px;opacity:.7;}
+  .typo-showcase{margin-top:40px;}
+  .typo-row{
+    padding:24px 0;border-bottom:1px solid var(--border-light);
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .typo-row:last-child{border-bottom:none;}
+  .typo-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .typo-sample-serif{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:32px;color:var(--dark);line-height:1;
+  }
+  .typo-sample-sans{
+    font-family:'Outfit',sans-serif;font-weight:500;
+    font-size:22px;color:var(--dark);letter-spacing:1px;text-transform:uppercase;
+  }
+
+  /* ── DIGITAL ── */
+  .digital{
+    padding:100px 60px;background:var(--beige2);
+    position:relative;overflow:hidden;
+  }
+  .steps-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:1px;background:var(--border-light);
+    margin-top:64px;
+    border:1px solid var(--border-light);
+  }
+  .step-card{
+    background:var(--beige2);padding:52px 40px;
+    position:relative;overflow:hidden;
+    transition:background .3s;
+  }
+  .step-card:hover{background:var(--white);}
+  .step-num{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:80px;font-weight:300;color:rgba(201,168,76,.12);
+    line-height:1;margin-bottom:24px;
+  }
+  .step-name{
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:28px;color:var(--dark);margin-bottom:12px;
+  }
+  .step-desc{color:var(--muted);font-size:15px;line-height:1.7;}
+  .step-icon{
+    position:absolute;top:40px;right:40px;
+    width:44px;height:44px;border-radius:50%;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+    box-shadow:0 6px 20px rgba(201,168,76,.3);
+  }
+
+  /* ── CTA / VISIÓN ── */
+  .cta-sec{
+    background:var(--dark);
+    padding:120px 60px;text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .cta-glow{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,.07) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .cta-lila{
+    position:absolute;bottom:-100px;right:-100px;
+    width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle,rgba(181,123,238,.08) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .cta-sec h2{
+    font-family:'Cormorant Garamond',serif;font-weight:300;
+    font-size:clamp(52px,5.5vw,84px);line-height:.95;
+    color:var(--beige);margin-bottom:24px;position:relative;z-index:1;
+  }
+  .cta-sec h2 em{font-style:italic;color:var(--gold);}
+  .cta-pillars{
+    display:flex;justify-content:center;gap:60px;
+    margin-bottom:52px;position:relative;z-index:1;
+  }
+  .cta-pillar{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:22px;color:rgba(245,239,230,.45);
+    transition:color .3s;cursor:default;
+  }
+  .cta-pillar:hover{color:var(--gold);}
+  .cta-sec p{
+    color:var(--muted2);font-size:16px;max-width:460px;
+    margin:0 auto 52px;line-height:1.8;font-weight:300;
+    position:relative;z-index:1;
+  }
+  .cta-actions{display:flex;gap:20px;justify-content:center;position:relative;z-index:1;}
+
+  /* ── FOOTER ── */
+  footer{
+    padding:44px 60px;
+    border-top:1px solid var(--border-light);
+    background:var(--beige);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .footer-logo{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:22px;color:var(--muted);display:flex;align-items:baseline;gap:6px;
+  }
+  .footer-logo strong{font-style:normal;font-weight:600;font-size:18px;color:var(--gold);letter-spacing:3px;}
+  .footer-links{display:flex;gap:32px;}
+  .footer-links a{
+    color:var(--muted);text-decoration:none;font-size:12px;
+    letter-spacing:1.5px;text-transform:uppercase;
+    transition:color .25s;font-weight:400;
+  }
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{color:var(--muted);font-size:12px;}
+
+  /* ── REVEAL ── */
+  .rev{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s ease;}
+  .rev.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo-mark"><strong>UNIQ</strong> beauty</a>
+  <ul>
+    <li><a href="#mision">Misión</a></li>
+    <li><a href="#pilares">Pilares</a></li>
+    <li><a href="#social">Social</a></li>
+
+  </ul>
+  <a href="#cta" class="nav-pill">Explorar</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-blob blob-1"></div>
+  <div class="hero-bg-blob blob-2"></div>
+
+  <div class="hero-text">
+    <div class="eyebrow rev">Belleza inclusiva · Sin género · Sin límites</div>
+    <h1 class="rev d1">
+      LA BELLEZA<br>
+      NO TIENE<br>
+      <em>REGLAS.</em>
+    </h1>
+    <p class="hero-quote rev d2">
+      Una marca para quienes se atreven a expresarse sin límites — universal, fluida, <span style="color:var(--lila)">UNIQ.</span>
+    </p>
+    <div class="hero-btns rev d3">
+      <a href="#pilares" class="btn-dark">Descubrir la marca</a>
+      <a href="#mision" class="btn-outline">Nuestra misión <span>→</span></a>
+    </div>
+  </div>
+
+  <div class="hero-vis rev d2">
+    <div class="petal" style="border-color:rgba(201,168,76,.08)"></div>
+    <div class="petal" style="border-color:rgba(181,123,238,.1)"></div>
+    <div class="product-jar">
+      <div class="jar-label">
+        <strong>UNIQ BEAUTY</strong>
+        Tu ritual,<br>tu obra.
+      </div>
+      <div class="jar-badge">sin<br>reglas</div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFIESTO / MISIÓN -->
+<section class="manifesto" id="mision">
+  <div class="manifesto-bg-txt">UNIQ</div>
+  <div class="rev">
+    <p class="manifesto-quote">
+      "Beauty belongs to everyone —<br>
+      unapologetically,<br>universally, <em>UNIQ.</em>"
+    </p>
+  </div>
+  <div class="manifesto-text rev d1">
+    <span class="manifesto-tag">Nuestra misión</span>
+    <p>UNIQ BEAUTY nació de una convicción: la belleza es un acto de expresión personal, no una norma impuesta.</p>
+    <p>Creemos que cada persona merece herramientas para mostrarse tal como es — sin categorías, sin límites, sin reglas. Para todas las personas. Sin excepción.</p>
+    <a href="#pilares" class="btn-outline" style="color:var(--muted2);">Conoce nuestros pilares <span style="color:var(--gold)">→</span></a>
+  </div>
+</section>
+
+<!-- PILARES -->
+<section class="pillars" id="pilares">
+  <div class="pillars-header">
+    <div>
+      <span class="section-eyebrow rev">Personalidad de marca</span>
+      <h2 class="section-heading rev d1">Cuatro pilares<br>que <em>nos definen</em></h2>
+    </div>
+    <p class="section-body rev d2">La identidad de UNIQ BEAUTY se construye sobre valores que van más allá del producto — son una declaración de principios.</p>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-card rev">
+      <div class="pillar-icon">✨</div>
+      <div class="pillar-name">Expresiva</div>
+      <p class="pillar-desc">Celebramos cada estilo sin filtros ni categorías. Tu expresión es válida tal como es.</p>
+    </div>
+    <div class="pillar-card rev d1">
+      <div class="pillar-icon">💫</div>
+      <div class="pillar-name">Empoderada</div>
+      <p class="pillar-desc">Nuestra comunidad lleva la belleza como escudo y declaración de identidad propia.</p>
+    </div>
+    <div class="pillar-card rev d2">
+      <div class="pillar-icon">🎉</div>
+      <div class="pillar-name">Celebratoria</div>
+      <p class="pillar-desc">Cada tono, textura y look merece ser festejado. Aquí no hay looks incorrectos.</p>
+    </div>
+    <div class="pillar-card rev d3">
+      <div class="pillar-icon">🌍</div>
+      <div class="pillar-name">Inclusiva</div>
+      <p class="pillar-desc">Diseñada para todos los géneros, edades y tonos de piel. Sin excepción.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL MEDIA -->
+<section class="social" id="social">
+  <div class="social-header">
+    <div>
+      <span class="section-eyebrow rev">Comunidad</span>
+      <h2 class="section-heading rev d1">Contenido que<br><em>conecta y convierte</em></h2>
+    </div>
+    <a href="#" class="btn-outline rev">Ver más posts <span>→</span></a>
+  </div>
+  <div class="posts-grid">
+    <div class="post-card rev">
+      <div class="post-visual">
+        <div class="post-visual-lbl">Post de Producto</div>
+        🌟
+      </div>
+      <div class="post-body">
+        <p class="post-copy">"Tu ritual, tu obra."</p>
+        <p class="post-sub">Composición cálida con paleta de tonos dorados. Imagen del producto en primer plano.</p>
+        <span class="post-tag">#UniqBeauty</span>
+      </div>
+    </div>
+    <div class="post-card rev d1">
+      <div class="post-visual">
+        <div class="post-visual-lbl">Post de Comunidad</div>
+        💜
+      </div>
+      <div class="post-body">
+        <p class="post-copy">"Esto es UNIQ."</p>
+        <p class="post-sub">Repost de usuario con acabado lila. Enviado por @user de la comunidad.</p>
+        <span class="post-tag" style="color:var(--lila)">#MiRitualUNIQ</span>
+      </div>
+    </div>
+    <div class="post-card rev d2">
+      <div class="post-visual">
+        <div class="post-visual-lbl">Post de Marca</div>
+        🪬
+      </div>
+      <div class="post-body">
+        <p class="post-copy">"Sin reglas. Solo tú."</p>
+        <p class="post-sub">Packaging sobre fondo beige. Luz cálida, fondos beige-dorados.</p>
+        <span class="post-tag">#BeautyBelongsToEveryone</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- EXPERIENCIA DIGITAL -->
+<section class="digital">
+  <span class="section-eyebrow rev">Experiencia digital</span>
+  <h2 class="section-heading rev d1">Un e-commerce que empodera<br>desde el <em>primer clic</em></h2>
+  <div class="steps-grid">
+    <div class="step-card rev">
+      <div class="step-num">01</div>
+      <div class="step-icon">🔍</div>
+      <div class="step-name">Descubrir</div>
+      <p class="step-desc">Quiz personalizado por estado de piel y tono. Una entrada sin barreras ni categorías.</p>
+    </div>
+    <div class="step-card rev d1">
+      <div class="step-num">02</div>
+      <div class="step-icon">🛍️</div>
+      <div class="step-name">Explorar</div>
+      <p class="step-desc">Categorías neutrales en género. Aquí los productos no tienen dueño, son para todos.</p>
+    </div>
+    <div class="step-card rev d2">
+      <div class="step-num">03</div>
+      <div class="step-icon">🤝</div>
+      <div class="step-name">Pertenecer</div>
+      <p class="step-desc">Reseñas y contenido real de la comunidad. Eres bienvenido tal como eres.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / VISIÓN -->
+<section class="cta-sec" id="cta">
+  <div class="cta-glow"></div>
+  <div class="cta-lila"></div>
+  <h2 class="rev">UNIQ BEAUTY<br>es un <em>movimiento.</em></h2>
+  <div class="cta-pillars rev d1">
+    <span class="cta-pillar">Empoderar</span>
+    <span class="cta-pillar">Expresar</span>
+    <span class="cta-pillar">Incluir</span>
+  </div>
+  <p class="rev d2">No solo vendemos productos de belleza — construimos un espacio donde cada persona encuentra permiso para ser plenamente sí misma.</p>
+  <div class="cta-actions rev d3">
+    <a href="#" class="btn-dark">Únete al movimiento</a>
+    <a href="#" class="btn-outline" style="color:var(--muted2);">Descubrir productos <span style="color:var(--gold)">→</span></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><strong>UNIQ</strong> beauty</div>
+  <span class="footer-copy">© 2025 UNIQ BEAUTY — La belleza no tiene reglas</span>
+  <div class="footer-links">
+    <a href="#">Privacidad</a>
+    <a href="#">Términos</a>
+    <a href="#">Comunidad</a>
+  </div>
+</footer>
+
+<script>
+// ── SCROLL REVEAL ──
+const revEls = document.querySelectorAll('.rev');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+revEls.forEach(el => obs.observe(el));
+
+// ── JAR PARALLAX ──
+document.addEventListener('mousemove', e => {
+  const jar = document.querySelector('.product-jar');
+  if (!jar) return;
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  const dx = (e.clientX - cx) / cx;
+  const dy = (e.clientY - cy) / cy;
+  jar.style.transform = `translateY(${-8 + dy * -6}px) rotate(${-3 + dx * 2}deg)`;
+});
+
+// ── COPY HOVER SOUND (visual feedback) ──
+document.querySelectorAll('.copy-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    el.style.paddingLeft = '20px';
+    el.style.borderLeft = '2px solid var(--gold)';
+    el.style.transition = 'all .3s';
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.paddingLeft = '0';
+    el.style.borderLeft = 'none';
+  });
+});
+</script>
+</body>
+</html>
